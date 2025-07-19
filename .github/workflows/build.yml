@@ -1,0 +1,59 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "1,31 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v2
+
+      - run: mkdir -p ./src/ && mkdir -p ./dist/
+
+      - run: curl https://developers.google.com/static/search/apis/ipranges/googlebot.json | jq . > ./src/google-googlebot.json
+      - run: curl https://developers.google.com/static/search/apis/ipranges/special-crawlers.json | jq . > ./src/google-special-crawlers.json
+      - run: curl https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json | jq . > ./src/google-user-triggered-fetchers.json
+      - run: curl https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json | jq . > ./src/google-user-triggered-fetchers-google.json
+      - run: curl https://openai.com/searchbot.json | jq . > ./src/openai-searchbot.json
+      - run: curl https://openai.com/chatgpt-user.json | jq . > ./src/openai-chatgpt-user.json
+      - run: curl https://openai.com/gptbot.json | jq . > ./src/openai-gptbot.json
+      - run: curl https://www.perplexity.ai/perplexitybot.json | jq . > ./src/perplexity-bot.json
+      - run: curl https://www.perplexity.ai/perplexity-user.json | jq . > ./src/perplexity-user.json
+      - run: curl https://www.bing.com/toolbox/bingbot.json | jq . > ./src/microsoft-bingbot.json
+      - run: curl https://duckduckgo.com/duckduckbot.json | jq . > ./src/duckduckgo-duckduckbot.json
+      - run: curl https://duckduckgo.com/duckassistbot.json | jq . > ./src/duckduckgo-duckassistbot.json
+      - run: curl https://search.developer.apple.com/applebot.json | jq . > ./src/apple-applebot.json
+      - run: curl https://mistral.ai/mistralai-user-ips.json | jq . > ./src/mistralai-user-ips.json
+      - run: curl https://index.commoncrawl.org/ccbot.json | jq . > ./src/commoncrawl-ccbot.json
+
+      - name: Build ips feed
+        run: >
+          jq -c -n '
+            [inputs as $in
+              | input_filename | capture("(?<filename>[^/]+)\\.json$") | .filename as $file
+              | {
+                  key: $file,
+                  value: {
+                    prefixesCreationTime: $in.creationTime,
+                    prefixes: ($in.prefixes
+                      | map(.ipv4Prefix // .ipv6Prefix)
+                      | map(select(. != null))
+                    )
+                  }
+                }
+            ]
+            | from_entries
+          ' ./src/* > ./dist/ips.json
+
+      - name: Commit and push if it changed
+        run: |-
+          git config user.name "searchtheory-ip-fetcher"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "ip updates: $(date '+%F@%H:%m')" || exit 0
+          git push
