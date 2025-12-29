@@ -15,21 +15,21 @@ jobs:
 
       - run: mkdir -p ./src/ && mkdir -p ./dist/
 
-      - run: curl https://developers.google.com/static/search/apis/ipranges/googlebot.json | jq . > ./src/google-googlebot.json
-      - run: curl https://developers.google.com/static/search/apis/ipranges/special-crawlers.json | jq . > ./src/google-special-crawlers.json
-      - run: curl https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json | jq . > ./src/google-user-triggered-fetchers.json
-      - run: curl https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json | jq . > ./src/google-user-triggered-fetchers-google.json
-      - run: curl https://openai.com/searchbot.json | jq . > ./src/openai-searchbot.json
-      - run: curl https://openai.com/chatgpt-user.json | jq . > ./src/openai-chatgpt-user.json
-      - run: curl https://openai.com/gptbot.json | jq . > ./src/openai-gptbot.json
-      - run: curl https://www.perplexity.ai/perplexitybot.json | jq . > ./src/perplexity-bot.json
-      - run: curl https://www.perplexity.ai/perplexity-user.json | jq . > ./src/perplexity-user.json
-      - run: curl https://www.bing.com/toolbox/bingbot.json | jq . > ./src/microsoft-bingbot.json
-      - run: curl https://duckduckgo.com/duckduckbot.json | jq . > ./src/duckduckgo-duckduckbot.json
-      - run: curl https://duckduckgo.com/duckassistbot.json | jq . > ./src/duckduckgo-duckassistbot.json
-      - run: curl https://search.developer.apple.com/applebot.json | jq . > ./src/apple-applebot.json
-      - run: curl https://mistral.ai/mistralai-user-ips.json | jq . > ./src/mistralai-user-ips.json
-      - run: curl https://index.commoncrawl.org/ccbot.json | jq . > ./src/commoncrawl-ccbot.json
+      - run: curl -fsSL https://developers.google.com/static/search/apis/ipranges/googlebot.json | jq . > ./src/google-googlebot.json.tmp && mv ./src/google-googlebot.json.tmp ./src/google-googlebot.json || true
+      - run: curl -fsSL https://developers.google.com/static/search/apis/ipranges/special-crawlers.json | jq . > ./src/google-special-crawlers.json.tmp && mv ./src/google-special-crawlers.json.tmp ./src/google-special-crawlers.json || true
+      - run: curl -fsSL https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json | jq . > ./src/google-user-triggered-fetchers.json.tmp && mv ./src/google-user-triggered-fetchers.json.tmp ./src/google-user-triggered-fetchers.json || true
+      - run: curl -fsSL https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json | jq . > ./src/google-user-triggered-fetchers-google.json.tmp && mv ./src/google-user-triggered-fetchers-google.json.tmp ./src/google-user-triggered-fetchers-google.json || true
+      - run: curl -fsSL https://openai.com/searchbot.json | jq . > ./src/openai-searchbot.json.tmp && mv ./src/openai-searchbot.json.tmp ./src/openai-searchbot.json || true
+      - run: curl -fsSL https://openai.com/chatgpt-user.json | jq . > ./src/openai-chatgpt-user.json.tmp && mv ./src/openai-chatgpt-user.json.tmp ./src/openai-chatgpt-user.json || true
+      - run: curl -fsSL https://openai.com/gptbot.json | jq . > ./src/openai-gptbot.json.tmp && mv ./src/openai-gptbot.json.tmp ./src/openai-gptbot.json || true
+      - run: curl -fsSL https://www.perplexity.ai/perplexitybot.json | jq . > ./src/perplexity-bot.json.tmp && mv ./src/perplexity-bot.json.tmp ./src/perplexity-bot.json || true
+      - run: curl -fsSL https://www.perplexity.ai/perplexity-user.json | jq . > ./src/perplexity-user.json.tmp && mv ./src/perplexity-user.json.tmp ./src/perplexity-user.json || true
+      - run: curl -fsSL https://www.bing.com/toolbox/bingbot.json | jq . > ./src/microsoft-bingbot.json.tmp && mv ./src/microsoft-bingbot.json.tmp ./src/microsoft-bingbot.json || true
+      - run: curl -fsSL https://duckduckgo.com/duckduckbot.json | jq . > ./src/duckduckgo-duckduckbot.json.tmp && mv ./src/duckduckgo-duckduckbot.json.tmp ./src/duckduckgo-duckduckbot.json || true
+      - run: curl -fsSL https://duckduckgo.com/duckassistbot.json | jq . > ./src/duckduckgo-duckassistbot.json.tmp && mv ./src/duckduckgo-duckassistbot.json.tmp ./src/duckduckgo-duckassistbot.json || true
+      - run: curl -fsSL https://search.developer.apple.com/applebot.json | jq . > ./src/apple-applebot.json.tmp && mv ./src/apple-applebot.json.tmp ./src/apple-applebot.json || true
+      - run: curl -fsSL https://mistral.ai/mistralai-user-ips.json | jq . > ./src/mistralai-user-ips.json.tmp && mv ./src/mistralai-user-ips.json.tmp ./src/mistralai-user-ips.json || true
+      - run: curl -fsSL https://index.commoncrawl.org/ccbot.json | jq . > ./src/commoncrawl-ccbot.json.tmp && mv ./src/commoncrawl-ccbot.json.tmp ./src/commoncrawl-ccbot.json || true
 
       - name: Build ips feed
         run: >
