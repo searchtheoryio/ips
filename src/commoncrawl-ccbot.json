@@ -1,10 +1,10 @@
 {
-  "synctoken": "20260515110143",
-  "creationTime": "2026-05-15T11:01:43Z",
+  "synctoken": "20260804124020",
+  "creationTime": "2026-08-04T12:40:20Z",
   "notes": "IP ranges used by CCBot. For verification of IPv4 addresses, FCrDNS is also recommended.",
   "prefixes": [
     {
-      "ipv6Prefix": "2600:1f28:365:80b0::/60"
+      "ipv6Prefix": "2600:1f28:365:8000::/56"
     },
     {
       "ipv4Prefix": "3.41.188.32/29"
